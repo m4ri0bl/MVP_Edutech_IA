@@ -1,0 +1,60 @@
+classDiagram
+    namespace Modelo {
+        class Usuario {
+            -id: int
+            -nombre: String
+            -email: String
+            +validarCredenciales() boolean
+        }
+        class Curso {
+            -id: int
+            -titulo: String
+            -descripcion: String
+            +obtenerContenido() List~Contenido~
+        }
+        class Contenido {
+            -id: int
+            -tipo: String
+            -datos: String
+        }
+    }
+    
+    namespace Vista {
+        class LoginView {
+            +mostrarFormularioLogin()
+            +mostrarMensajeError()
+        }
+        class DashboardView {
+            +mostrarInformacionUsuario()
+            +mostrarCursos()
+        }
+        class CursoView {
+            +mostrarDetalleCurso()
+        }
+    }
+    
+    namespace Controlador {
+        class UserController {
+            +iniciarSesion()
+            +cerrarSesion()
+        }
+        class CourseController {
+            +listarCursos()
+            +mostrarCurso()
+        }
+        class DashboardController {
+            +cargarDashboard()
+        }
+    }
+
+    Curso --> "0..*" Contenido
+    UserController --> Usuario : usa
+    CourseController --> Curso : gestiona
+    DashboardController --> Usuario : consulta
+    DashboardController --> Curso : consulta
+    LoginView --> UserController : envía credenciales
+    DashboardView --> DashboardController : solicita datos
+    CursoView --> CourseController : solicita detalles
+    UserController --> LoginView : devuelve resultados
+    CourseController --> CursoView : devuelve resultados
+    DashboardController --> DashboardView : devuelve resultados
